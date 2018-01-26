@@ -1,0 +1,25 @@
+{
+  "name": "webworkers-exploration",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "rm -Rf dist/ && mkdir dist/ && cp -R static/* dist/ && elm-make src/Main.elm --output=dist/main.js && elm-make src/Worker.elm --output=dist/worker.js",
+    "start": "http-server ./dist -p 8081",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mfeineis/webworkers-exploration.git"
+  },
+  "author": "Martin Feineis",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/mfeineis/webworkers-exploration/issues"
+  },
+  "homepage": "https://github.com/mfeineis/webworkers-exploration#readme",
+  "devDependencies": {
+    "elm": "^0.18.0",
+    "http-server": "^0.11.1"
+  }
+}

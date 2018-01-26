@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Webworker Exploration</title>
+</head>
+<body>
+    <script src="main.js"></script>
+    <script>
+    (function () {
+
+    console.log('isWebworker?', typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope)
+    console.log("[app] initializing app...");
+
+    const app = Elm.Main.fullscreen({
+    });
+
+    console.log("[app] app created...");
+    console.log("[app] spawning workers...");
+
+    const workers = [];
+
+    if ("Worker" in window) {
+        workers.push(new Worker("worker-init.js"));
+    } else {
+        throw new Error("Webworker not supported???");
+    }
+
+    console.log("[app] waiting for workers...");
+    console.log("[app] setting up worker connections...");
+
+    app.ports.fromElm.subscribe(message => {
+        workers.forEach(worker => {
+            console.log('app.postMessage', ev);
+            worker.postMessage(message);
+        });
+    });
+
+    workers.forEach(worker => {
+        console.log("[app] -> connecting worker", worker);
+        worker.addEventListener('message', ev => {
+            console.log('app.onmessage', ev);
+            app.ports.toElm.send(ev.data);
+        });
+    });
+
+    console.log("[app] done.", app, workers);
+
+    })();
+    </script>
+</body>
+</html>
